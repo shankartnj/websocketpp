@@ -88,7 +88,12 @@ inline size_t request::consume(char const * buf, size_t len) {
         //the range [begin,end) now represents a line to be processed.
         if (end-begin == 0) {
             // we got a blank line
-            if (m_method.empty() || get_header("Host").empty()) {
+            bool empty = false;
+            if (m_buf->end() - end == 2 && strcmp(&*begin, header_delimiter) == 0) {
+                empty = true;
+            }
+
+            if (m_method.empty() || (!empty && get_header("Host").empty())) {
                 throw exception("Incomplete Request",status_code::bad_request);
             }
 
