@@ -248,7 +248,13 @@ _WEBSOCKETPP_ERROR_CODE_ENUM_NS_END_
 
 namespace websocketpp {
 
-class exception : public std::exception {
+#ifdef __APPLE__
+#define WEBPP_HIDDEN __attribute__ ((visibility ("hidden")))
+#else
+#define WEBPP_HIDDEN
+#endif
+
+class WEBPP_HIDDEN exception : public std::exception {
 public:
     exception(std::string const & msg, lib::error_code ec = make_error_code(error::general))
       : m_msg(msg.empty() ? ec.message() : msg), m_code(ec)
