@@ -355,7 +355,7 @@ protected:
     template <typename ErrorCodeType>
     lib::error_code translate_ec(ErrorCodeType ec) {
         if (ec.category() == lib::asio::error::get_ssl_category()) {
-            if (ERR_GET_REASON(ec.value()) == SSL_R_SHORT_READ) {
+            if (ERR_GET_REASON(ec.value()) == SSL_R_UNEXPECTED_RECORD) {
                 return make_error_code(transport::error::tls_short_read);
             } else {
                 // We know it is a TLS related error, but otherwise don't know
